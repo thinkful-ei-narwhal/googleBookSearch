@@ -3,10 +3,10 @@ import React from 'react'
 function Print(props) {
   return (
     <div>
-      <select>
-        <option>All</option>
-        <option>Magazine</option>
-        <option>Books</option>
+      <select value={props.printType} onChange={props.submit}>
+        <option value="All">All</option>
+        <option value="Magazine">Magazine</option>
+        <option value="Books">Books</option>
       </select>
     </div>
   )

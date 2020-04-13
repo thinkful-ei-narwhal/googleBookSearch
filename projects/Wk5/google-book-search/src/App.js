@@ -13,17 +13,26 @@ import BookList from './BookList';
 //display a list of the books from the data returned
 class Books extends React.Component {
   state = {
-    searchParams: {
-      q: 'bananas',
-      maxResults: 5,
-      filter: 'ebooks',
-      printType: 'all',
-    },
+    q: 'bananas',
+    maxResults: 5,
+    filter: 'ebooks',
+    printType: 'all',
     books: [],
   };
+
+  handlePrintType = (event) => {
+    event.preventDefault();
+    this.setState({ printType: event.target.value })
+  }
+
+  handleFilter = (event) => {
+    event.preventDefault();
+    this.setState({ filter: event.target.value })
+  }
+
   fetchBooks = (e) => {
     e.preventDefault();
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=bananas`)
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=bananas&${this.state.filter}&${this.state.printType}&${this.state.maxResults}`)
       .then((res) => res.json())
       .then((res) =>
         this.setState({
@@ -31,26 +40,23 @@ class Books extends React.Component {
         })
       );
   };
-  // formatObj = () => {
-  //   this.state.books.forEach(() =>)
-  // };
-  // handleSearch = (e) => {};
+
   render() {
-    console.log(this.state.books);
-    console.log(this.formatObj());
+    console.log(this.state.books)
     const books = this.state.books.map((book) => (
       <BookList
         key={book.id}
-        title={book.title}
-        author={book.author}
-        description={book.description}
-        imageLinks={book.imageLinks}
+        title={book.volumeInfo.title}
+        author={book.volumeInfo.authors}
+        description={book.volumeInfo.description}
+        imageLinks={book.volumeInfo.imageLinks.thumbnail}
+
       />
     ));
-    console.log(books);
+    // console.log(books);
     return (
       <div>
-        <Input api={this.fetchBooks} />
+        <Input api={this.fetchBooks} print={this.handlePrintType} filter={this.handleFilter} />
         {books}
       </div>
     );

@@ -8,8 +8,8 @@ function Input(props) {
       <form>
         <input type="text" placeholder="Type all the things"></input>
         <button onClick={props.api}>Get all the things</button>
-        <Print />,
-        <Filter />
+        <Print submit={props.print} />
+        <Filter submit={props.filter} />
       </form>
     </div>
   );
